@@ -62,8 +62,8 @@ type family CanBeNested a :: *
 type instance CanBeNested BasicSVG = BasicInner
 
 data SVGEl t a = SVGEl
-  { svgEl_el       :: RD.El t
-  , svgEl_children :: Dynamic t (Map (CanBeNested a) (RD.El t))
+  { _svgEl_el       :: RD.El t
+  , _svgEl_children :: Dynamic t (Map (CanBeNested a) (RD.El t))
   }
 
 svgElDynAttr'
@@ -145,6 +145,26 @@ svg_ dAttrs innerM =
 -- Helpers ?
 -- There has to be a nicer way of tying these together :/
 
+svgBasicDyn
+  :: ( RD.DomBuilder t m
+     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
+     , R.Reflex t
+     , PostBuild t m
+     , MonadFix m
+     , MonadHold t m
+     , AsSVGTag s
+     , AsSVGTag (CanBeNested s)
+     , Ord (CanBeNested s)
+     )
+  => s
+  -> ( p -> Map Text Text )
+  -> Dynamic t p
+  -> Dynamic t ( Map (CanBeNested s) (Map Text Text) )
+  -> m ( SVGEl t s )
+svgBasicDyn t propFn dProps =
+  svgElDyn t (propFn <$> dProps)
+
+-- Example functions for simple rectangle.
 svgRectDyn_
   :: ( RD.DomBuilder t m
      , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
@@ -156,7 +176,7 @@ svgRectDyn_
   => Dynamic t SVG_Rect
   -> m ( SVGEl t BasicSVG )
 svgRectDyn_ dProps =
-  svgElDynAttrs_ Rectangle (makeRectProps <$> dProps)
+  svgBasicDyn Rectangle makeRectProps dProps (pure mempty)
 
 svgRectDyn
   :: ( RD.DomBuilder t m
@@ -169,5 +189,5 @@ svgRectDyn
   => Dynamic t SVG_Rect
   -> Dynamic t ( Map BasicInner (Map Text Text) )
   -> m ( SVGEl t BasicSVG )
-svgRectDyn dProps =
-  svgElDyn Rectangle (makeRectProps <$> dProps)
+svgRectDyn =
+  svgBasicDyn Rectangle makeRectProps
