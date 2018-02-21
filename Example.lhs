@@ -44,8 +44,8 @@ Create a normal ``Map`` of HTML attributes to apply to the shape
 Build our first ``<rect>``.
 
 >     dRect1 = pure $ S.SVG_Rect
->       ((40.0 :: Float) ^. from S._PosX)
->       ((40.0 :: Float) ^. from S._PosY)
+>       (40.0 ^. from S._PosX)
+>       (40.0 ^. from S._PosY)
 >       (S.Width 50.0)
 >       (S.Height 50.0)
 >       Nothing
@@ -56,17 +56,17 @@ This is the same as writing: <rect x="40" y="40" height="50" width="50">.
 We can use lenses to modify the properties of our shape.
 
 >     shiftRect :: Dynamic t SVG_Rect -> Dynamic t SVG_Rect
->     shiftRect = fmap (S.svg_rect_pos_x . S._PosX +~ (3.0 :: Float))
+>     shiftRect = fmap (S.svg_rect_pos_x . S._PosX +~ 3.0)
 
 We can also define a ``<rect>`` with corner radius.
 
 >     dRect3 = pure $ S.SVG_Rect
->       ((20.0 :: Float) ^. from S._PosX)
->       ((20.0 :: Float) ^. from S._PosY)
+>       (20.0 ^. from S._PosX)
+>       (20.0 ^. from S._PosY)
 >       (S.Width 30.0)
 >       (S.Height 30.0)
->       ((15.0 :: Float) ^? from S._CornerRadiusX)
->       ((15.0 :: Float) ^? from S._CornerRadiusY)
+>       (15.0 ^? from S._CornerRadiusX)
+>       (15.0 ^? from S._CornerRadiusY)
 
 This is the same as <rect x="40" y="40" height="50" width="50" cx="15" cy="15">.
 
