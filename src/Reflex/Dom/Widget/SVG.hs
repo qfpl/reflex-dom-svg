@@ -163,6 +163,24 @@ svgBasicDyn
 svgBasicDyn t propFn dProps =
   svgElDyn t (propFn <$> dProps)
 
+svgBasicDyn_
+  :: ( RD.DomBuilder t m
+     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
+     , R.Reflex t
+     , PostBuild t m
+     , MonadFix m
+     , MonadHold t m
+     , AsSVGTag s
+     , AsSVGTag (CanBeNested s)
+     , Ord (CanBeNested s)
+     )
+  => s
+  -> ( p -> Map Text Text )
+  -> Dynamic t p
+  -> m ( SVGEl t s )
+svgBasicDyn_ t propFn dProps =
+  svgBasicDyn t propFn dProps (pure mempty)
+
 -- Example functions for simple rectangle.
 svgRectDyn_
   :: ( RD.DomBuilder t m
@@ -174,8 +192,8 @@ svgRectDyn_
      )
   => Dynamic t SVG_Rect
   -> m ( SVGEl t BasicSVG )
-svgRectDyn_ dProps =
-  svgBasicDyn Rectangle makeRectProps dProps (pure mempty)
+svgRectDyn_ =
+  svgBasicDyn_ Rectangle makeRectProps
 
 svgRectDyn
   :: ( RD.DomBuilder t m

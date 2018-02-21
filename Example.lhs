@@ -1,5 +1,6 @@
 > {-# LANGUAGE TypeFamilies #-}
 > {-# LANGUAGE OverloadedStrings #-}
+> {-# LANGUAGE ScopedTypeVariables #-}
 > module Example where
 
 > import Control.Lens ((^.), (.~), (^?), (+~), ix, from)
@@ -7,21 +8,23 @@
 > import Data.Function ((&))
 > import Data.Monoid (mempty)
 > import Data.Semigroup (mappend)
+> import Reflex (Dynamic)
 > import qualified Reflex as R
 > import Reflex.Dom ((=:))
 > import qualified Reflex.Dom as RD
 
 > import qualified Reflex.Dom.Widget.SVG as S
+> import Reflex.Dom.Widget.SVG.Types (SVG_Rect)
 > import qualified Reflex.Dom.Widget.SVG.Types as S
 
 > exampleUsage
->   :: ( R.Reflex t
->      , R.MonadHold t m
->      , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
->      , RD.DomBuilder t m
->      , RD.PostBuild t m
->      , MonadFix m
->      )
+>   :: forall t m. ( R.Reflex t
+>                  , R.MonadHold t m
+>                  , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
+>                  , RD.DomBuilder t m
+>                  , RD.PostBuild t m
+>                  , MonadFix m
+>                  )
 >   => m ()
 > exampleUsage = do
 >   let
@@ -50,12 +53,10 @@ Build our first ``<rect>``.
 
 This is the same as writing: <rect x="40" y="40" height="50" width="50">.
 
-SVG_Rect ((40.0 :: Float) ^. posX) ((40.0 :: Float) ^. posY) (Width 50.0) (Height 50.0) Nothing Nothing
-
 We can use lenses to modify the properties of our shape.
 
->     shiftRect = 
->       fmap (S.svg_rect_pos_x . S._PosX +~ (3.0 :: Float))
+>     shiftRect :: Dynamic t SVG_Rect -> Dynamic t SVG_Rect
+>     shiftRect = fmap (S.svg_rect_pos_x . S._PosX +~ (3.0 :: Float))
 
 We can also define a ``<rect>`` with corner radius.
 
