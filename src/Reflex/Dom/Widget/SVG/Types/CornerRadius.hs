@@ -2,34 +2,30 @@
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Reflex.Dom.Widget.SVG.Types.CornerRadius where
+module Reflex.Dom.Widget.SVG.Types.CornerRadius
+  ( CornerRadius
+  , _CornerRadiusX
+  , _CornerRadiusY
+  , cornerRadiusToText
+  ) where
 
-import           Control.Lens                    (Choice, Optic', iso, prism',
-                                                  re, (^.), _Show)
+import           Control.Lens                    (Iso', iso)
 
-import           Data.Text                       (Text, unpack)
-import           Data.Text.Lens                  (packed)
-import           Safe                            (readMay)
+import           Data.Text                       (Text, pack)
 
 import           Reflex.Dom.Widget.SVG.Types.Pos (X, Y)
 
 newtype CornerRadius p =
   CornerRadius Float
 
-class AsCornerRadius t p f s where
-  cornerRadius :: Optic' p f s (CornerRadius t)
+cornerRadiusIso :: Iso' (CornerRadius p) Float
+cornerRadiusIso = iso (\(CornerRadius f) -> f) CornerRadius
 
-instance AsCornerRadius t p f (CornerRadius t) where
-  cornerRadius = id
+cornerRadiusToText :: CornerRadius p -> Text
+cornerRadiusToText (CornerRadius p) = pack (show p)
 
-instance (Choice p, Applicative f) => AsCornerRadius t p f Float where
-  cornerRadius = iso CornerRadius (\(CornerRadius f) -> f)
+_CornerRadiusX :: Iso' (CornerRadius X) Float
+_CornerRadiusX = cornerRadiusIso
 
-instance (Choice p, Applicative f) => AsCornerRadius t p f Text where
-  cornerRadius = prism' (\(CornerRadius f) -> f ^. re _Show . packed) (fmap CornerRadius . readMay . unpack)
-
-cornerRadiusX :: AsCornerRadius X p f s => Optic' p f s (CornerRadius X)
-cornerRadiusX = cornerRadius
-
-cornerRadiusY :: AsCornerRadius Y p f s => Optic' p f s (CornerRadius Y)
-cornerRadiusY = cornerRadius
+_CornerRadiusY :: Iso' (CornerRadius Y) Float
+_CornerRadiusY = cornerRadiusIso

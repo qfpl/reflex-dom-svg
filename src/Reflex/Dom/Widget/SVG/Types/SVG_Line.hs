@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Reflex.Dom.Widget.SVG.Types.SVG_Line where
 
-import           Control.Lens                    (Lens', ix, re, (.~), (^.), _1,
+import           Control.Lens                    (Lens', ix, to, (.~), (^.), _1,
                                                   _2)
 
 import           Data.Function                   ((&))
@@ -10,8 +10,7 @@ import           Data.Map                        (Map)
 
 import           Data.Text                       (Text)
 
-import           Reflex.Dom.Widget.SVG.Types.Pos (AsPosX (..), AsPosY (..), Pos,
-                                                  X, Y)
+import           Reflex.Dom.Widget.SVG.Types.Pos (Pos, X, Y, posToText)
 
 data SVG_Line = SVG_Line
   { _svg_line_pos_start :: ( Pos X, Pos Y )
@@ -32,7 +31,7 @@ makeSVGLineProps
   :: SVG_Line
   -> Map Text Text
 makeSVGLineProps l = mempty
-  & ix "x1" .~ l ^. svg_line_pos_start . _1 . re posX
-  & ix "y1" .~ l ^. svg_line_pos_start . _2 . re posY
-  & ix "x2" .~ l ^. svg_line_pos_end . _1 . re posX
-  & ix "y2" .~ l ^. svg_line_pos_end . _2 . re posY
+  & ix "x1" .~ l ^. svg_line_pos_start . _1 . to posToText
+  & ix "y1" .~ l ^. svg_line_pos_start . _2 . to posToText
+  & ix "x2" .~ l ^. svg_line_pos_end . _1 . to posToText
+  & ix "y2" .~ l ^. svg_line_pos_end . _2 . to posToText

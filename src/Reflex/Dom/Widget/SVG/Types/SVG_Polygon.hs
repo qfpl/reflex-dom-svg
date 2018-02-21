@@ -4,15 +4,13 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Polygon where
 
 import           Control.Lens                    (Lens')
 
+import           Data.List.NonEmpty              (NonEmpty, (<|))
 import           Data.Map                        (Map)
-
 import           Data.Text                       (Text)
 
 import           Reflex.Dom                      ((=:))
 
 import           Reflex.Dom.Widget.SVG.Types.Pos (Pos, X, Y, makePointsProp)
-
-import           Data.List.NonEmpty              (NonEmpty, (<|))
 
 data SVG_Polygon = SVG_Polygon
   { _svg_polygon_start :: (Pos X, Pos Y)

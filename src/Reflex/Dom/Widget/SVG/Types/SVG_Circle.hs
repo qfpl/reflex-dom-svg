@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Reflex.Dom.Widget.SVG.Types.SVG_Circle where
 
-import           Control.Lens                       (Lens', ix, re, (.~), (^.))
+import           Control.Lens                       (Lens', ix, re, to, (.~),
+                                                     (^.))
 
 import           Data.Function                      ((&))
 
@@ -9,9 +10,8 @@ import           Data.Map                           (Map)
 
 import           Data.Text                          (Text)
 
-import           Reflex.Dom.Widget.SVG.Types.Pos    (AsPosCenterX (..),
-                                                     AsPosCenterY (..), CenterX,
-                                                     CenterY, Pos)
+import           Reflex.Dom.Widget.SVG.Types.Pos    (CenterX, CenterY, Pos,
+                                                     posToText)
 import           Reflex.Dom.Widget.SVG.Types.Radius (AsRadius (..), Radius)
 
 data SVG_Circle = SVG_Circle
@@ -39,6 +39,6 @@ makeCircleProps
   :: SVG_Circle
   -> Map Text Text
 makeCircleProps c = mempty
-  & ix "cx" .~ c ^. svg_circle_pos_centerX . re posCenterX
-  & ix "cy" .~ c ^. svg_circle_pos_centerY . re posCenterY
+  & ix "cx" .~ c ^. svg_circle_pos_centerX . to posToText
+  & ix "cy" .~ c ^. svg_circle_pos_centerY . to posToText
   & ix "r"  .~ c ^. svg_circle_radius . re radius
