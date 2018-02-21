@@ -1,9 +1,7 @@
 {-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE LambdaCase            #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE RankNTypes            #-}
-{-# LANGUAGE RecursiveDo           #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
 module Reflex.Dom.Widget.SVG where
@@ -139,10 +137,11 @@ svg_
   => Dynamic t SVG_El
   -> m ( SVGEl t a )
   -> m ( RD.El t, SVGEl t a)
-svg_ dAttrs innerM =
-  svgElDynAttr' SVG_Root (makeSVGProps <$> dAttrs) innerM
+svg_ dAttrs =
+  svgElDynAttr' SVG_Root (makeSVGProps <$> dAttrs)
 
 -- Helpers ?
+
 -- There has to be a nicer way of tying these together :/
 
 svgBasicDyn
