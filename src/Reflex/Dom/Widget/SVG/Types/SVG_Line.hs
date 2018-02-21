@@ -1,16 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Reflex.Dom.Widget.SVG.Types.SVG_Line where
 
-import           Control.Lens                    (Lens', ix, to, (.~), (^.), _1,
-                                                  _2)
+import           Control.Lens                         (Lens', ix, (.~), (^.),
+                                                       _1, _2)
 
-import           Data.Function                   ((&))
+import           Data.Function                        ((&))
 
-import           Data.Map                        (Map)
+import           Data.Map                             (Map)
 
-import           Data.Text                       (Text)
+import           Data.Text                            (Text)
 
-import           Reflex.Dom.Widget.SVG.Types.Pos (Pos, X, Y, posToText)
+import           Reflex.Dom.Widget.SVG.Types.Internal (wrappedToText)
+import           Reflex.Dom.Widget.SVG.Types.Pos      (Pos, X, Y)
 
 data SVG_Line = SVG_Line
   { _svg_line_pos_start :: ( Pos X, Pos Y )
@@ -31,7 +32,7 @@ makeSVGLineProps
   :: SVG_Line
   -> Map Text Text
 makeSVGLineProps l = mempty
-  & ix "x1" .~ l ^. svg_line_pos_start . _1 . to posToText
-  & ix "y1" .~ l ^. svg_line_pos_start . _2 . to posToText
-  & ix "x2" .~ l ^. svg_line_pos_end . _1 . to posToText
-  & ix "y2" .~ l ^. svg_line_pos_end . _2 . to posToText
+  & ix "x1" .~ l ^. svg_line_pos_start . _1 . wrappedToText
+  & ix "y1" .~ l ^. svg_line_pos_start . _2 . wrappedToText
+  & ix "x2" .~ l ^. svg_line_pos_end . _1 . wrappedToText
+  & ix "y2" .~ l ^. svg_line_pos_end . _2 . wrappedToText

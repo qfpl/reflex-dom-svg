@@ -1,17 +1,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Reflex.Dom.Widget.SVG.Types.SVG_Ellipse where
 
-import           Control.Lens                       (Lens', ix, re, to, (.~),
-                                                     (^.))
+import           Control.Lens                         (Lens', ix, (.~), (^.))
 
-import           Data.Function                      ((&))
-import           Data.Map                           (Map)
+import           Data.Function                        ((&))
+import           Data.Map                             (Map)
 
-import           Data.Text                          (Text)
+import           Data.Text                            (Text)
 
-import           Reflex.Dom.Widget.SVG.Types.Pos    (CenterX, CenterY, Pos, X,
-                                                     Y, posToText)
-import           Reflex.Dom.Widget.SVG.Types.Radius (Radius, radiusX, radiusY)
+import           Reflex.Dom.Widget.SVG.Types.Internal (wrappedToText)
+import           Reflex.Dom.Widget.SVG.Types.Pos      (CenterX, CenterY, Pos, X,
+                                                       Y)
+import           Reflex.Dom.Widget.SVG.Types.Radius   (Radius)
+
+
+
 
 
 data SVG_Ellipse = SVG_Ellipse
@@ -45,7 +48,7 @@ makeEllipseProps
   :: SVG_Ellipse
   -> Map Text Text
 makeEllipseProps e = mempty
-  & ix "cx" .~ e ^. svg_ellipse_center_x . to posToText
-  & ix "cx" .~ e ^. svg_ellipse_center_y . to posToText
-  & ix "rx" .~ e ^. svg_ellipse_radius_x . re radiusX
-  & ix "ry" .~ e ^. svg_ellipse_radius_y . re radiusY
+  & ix "cx" .~ e ^. svg_ellipse_center_x . wrappedToText
+  & ix "cx" .~ e ^. svg_ellipse_center_y . wrappedToText
+  & ix "rx" .~ e ^. svg_ellipse_radius_x . wrappedToText
+  & ix "ry" .~ e ^. svg_ellipse_radius_y . wrappedToText

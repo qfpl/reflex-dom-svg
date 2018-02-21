@@ -1,18 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Reflex.Dom.Widget.SVG.Types.SVG_Circle where
 
-import           Control.Lens                       (Lens', ix, re, to, (.~),
-                                                     (^.))
+import           Control.Lens                         (Lens', ix, (.~), (^.))
 
-import           Data.Function                      ((&))
+import           Data.Function                        ((&))
 
-import           Data.Map                           (Map)
+import           Data.Map                             (Map)
 
-import           Data.Text                          (Text)
+import           Data.Text                            (Text)
 
-import           Reflex.Dom.Widget.SVG.Types.Pos    (CenterX, CenterY, Pos,
-                                                     posToText)
-import           Reflex.Dom.Widget.SVG.Types.Radius (AsRadius (..), Radius)
+import           Reflex.Dom.Widget.SVG.Types.Internal (wrappedToText)
+import           Reflex.Dom.Widget.SVG.Types.Pos      (CenterX, CenterY, Pos)
+import           Reflex.Dom.Widget.SVG.Types.Radius   (Radius)
 
 data SVG_Circle = SVG_Circle
   { _svg_circle_pos_centerX :: Pos CenterX
@@ -39,6 +38,6 @@ makeCircleProps
   :: SVG_Circle
   -> Map Text Text
 makeCircleProps c = mempty
-  & ix "cx" .~ c ^. svg_circle_pos_centerX . to posToText
-  & ix "cy" .~ c ^. svg_circle_pos_centerY . to posToText
-  & ix "r"  .~ c ^. svg_circle_radius . re radius
+  & ix "cx" .~ c ^. svg_circle_pos_centerX . wrappedToText
+  & ix "cy" .~ c ^. svg_circle_pos_centerY . wrappedToText
+  & ix "r"  .~ c ^. svg_circle_radius . wrappedToText

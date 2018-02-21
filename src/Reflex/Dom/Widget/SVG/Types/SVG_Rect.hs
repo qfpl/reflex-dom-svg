@@ -1,9 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Reflex.Dom.Widget.SVG.Types.SVG_Rect where
 
-import           Control.Lens                             (Lens', at, ix, to,
-                                                           (.~), (^.), (^?),
-                                                           _Just)
+import           Control.Lens                             (Lens', at, ix, (.~),
+                                                           (^.), (^?), _Just)
 
 import           Data.Function                            ((&))
 
@@ -11,9 +10,8 @@ import           Data.Map                                 (Map)
 
 import           Data.Text                                (Text)
 
-import           Reflex.Dom.Widget.SVG.Types.CornerRadius (CornerRadius,
-                                                           cornerRadiusToText)
-import           Reflex.Dom.Widget.SVG.Types.Pos          (Pos, X, Y, posToText)
+import           Reflex.Dom.Widget.SVG.Types.CornerRadius (CornerRadius)
+import           Reflex.Dom.Widget.SVG.Types.Pos          (Pos, X, Y)
 
 import           Reflex.Dom.Widget.SVG.Types.Internal     (Height, Width,
                                                            wrappedToText)
@@ -61,9 +59,9 @@ makeRectProps
   :: SVG_Rect
   -> Map Text Text
 makeRectProps r = mempty
-  & ix "x"      .~ r ^. svg_rect_pos_x . to posToText
-  & ix "y"      .~ r ^. svg_rect_pos_y . to posToText
-  & ix "width"  .~ r ^. svg_rect_width . wrappedToText
+  & ix "x" .~ r ^. svg_rect_pos_x . wrappedToText
+  & ix "y" .~ r ^. svg_rect_pos_y . wrappedToText
+  & ix "width" .~ r ^. svg_rect_width . wrappedToText
   & ix "height" .~ r ^. svg_rect_height . wrappedToText
-  & at "rx" .~ r ^? svg_rect_cornerRadius_x . _Just . to cornerRadiusToText
-  & at "ry" .~ r ^? svg_rect_cornerRadius_y . _Just . to cornerRadiusToText
+  & at "rx" .~ r ^? svg_rect_cornerRadius_x . _Just . wrappedToText
+  & at "ry" .~ r ^? svg_rect_cornerRadius_y . _Just . wrappedToText

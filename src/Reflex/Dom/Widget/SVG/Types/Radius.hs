@@ -2,31 +2,28 @@
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Reflex.Dom.Widget.SVG.Types.Radius where
+module Reflex.Dom.Widget.SVG.Types.Radius
+  ( Radius
+  , _RadiusX
+  , _RadiusY
+  ) where
 
-import           Control.Lens                    (Choice, Optic', iso, prism',
-                                                  re, (^.), _Show)
-
-import           Data.Text                       (Text, unpack)
-import           Data.Text.Lens                  (packed)
-import           Safe                            (readMay)
+import           Control.Lens                    (Iso', Rewrapped, Wrapped (..),
+                                                  iso, _Wrapped)
 
 import           Reflex.Dom.Widget.SVG.Types.Pos (X, Y)
 
 newtype Radius p =
   Radius Float
 
-class AsRadius t p f s where
-  radius :: Optic' p f s (Radius t)
+instance (Radius p) ~ t => Rewrapped (Radius p) t
 
-instance (Choice p, Applicative f) => AsRadius t p f Float where
-  radius = iso Radius (\(Radius f) -> f)
+instance Wrapped (Radius p) where
+  type Unwrapped (Radius p) = Float
+  _Wrapped' = iso (\(Radius x) -> x) Radius
 
-instance (Choice p, Applicative f) => AsRadius t p f Text where
-  radius = prism' (\(Radius f) -> f ^. re _Show . packed) (fmap Radius . readMay . unpack)
+_RadiusX :: Iso' (Radius X) Float
+_RadiusX = _Wrapped
 
-radiusX :: AsRadius X p f s => Optic' p f s (Radius X)
-radiusX = radius
-
-radiusY :: AsRadius Y p f s => Optic' p f s (Radius Y)
-radiusY = radius
+_RadiusY :: Iso' (Radius Y) Float
+_RadiusY = _Wrapped

@@ -12,19 +12,21 @@ module Reflex.Dom.Widget.SVG.Types.Pos
   , _PosY
   , _PosCenterX
   , _PosCenterY
-  , posToText
   , makePointsProp
   )
   where
 
-import           Control.Lens       (Iso', Rewrapped, Wrapped (..), iso,
-                                     _Wrapped)
+import           Control.Lens                         (Iso', Rewrapped,
+                                                       Wrapped (..), iso, (^.),
+                                                       _Wrapped)
 
-import           Data.Text          (Text, pack)
+import           Data.Text                            (Text)
 
-import           Data.Semigroup     ((<>))
+import           Data.Semigroup                       ((<>))
 
-import           Data.List.NonEmpty (NonEmpty)
+import           Data.List.NonEmpty                   (NonEmpty)
+
+import           Reflex.Dom.Widget.SVG.Types.Internal (wrappedToText)
 
 data X
 data Y
@@ -40,9 +42,6 @@ instance (Pos p) ~ t => Rewrapped (Pos p) t
 instance Wrapped (Pos p) where
   type Unwrapped (Pos p) = Float
   _Wrapped' = iso (\(Pos x) -> x) Pos
-
-posToText :: Pos p -> Text
-posToText (Pos p) = pack (show p)
 
 _PosX :: Iso' (Pos X) Float
 _PosX = _Wrapped
@@ -60,4 +59,4 @@ makePointsProp
   :: NonEmpty (Pos X, Pos Y)
   -> Text
 makePointsProp = foldMap
-  (\(x,y) -> posToText x <> "," <> posToText y <> " ")
+  (\(x,y) -> (x ^. wrappedToText) <> "," <> (y ^. wrappedToText) <> " ")
