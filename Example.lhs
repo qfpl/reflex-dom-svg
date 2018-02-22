@@ -3,7 +3,7 @@
 > {-# LANGUAGE ScopedTypeVariables #-}
 > module Example where
 
-> import Control.Lens ((^.), (.~), (^?), (+~), ix, from, re, _Wrapped)
+> import Control.Lens ((^.), (.~), (^?), (+~), ix, from)
 > import Data.Function ((&))
 > import Data.Monoid (mempty)
 > import Data.Semigroup (mappend)
@@ -14,10 +14,7 @@
 > import Reflex.Dom.Widget.SVG.Types (SVG_Rect)
 > import qualified Reflex.Dom.Widget.SVG.Types as S
 
-> exampleUsage
->   :: forall t m. ( MonadWidget t m
->                  )
->   => m ()
+> exampleUsage :: forall t m. ( MonadWidget t m ) => m ()
 > exampleUsage = do
 >   let
 
@@ -77,6 +74,7 @@ Finally, put it all together for ``Reflex.Dom`` to add to our page.
 
 >   _ <- S.svg_ dSvgProps $ do
 >     _ <- S.svgBasicDyn S.Rectangle (mappend attrs . S.makeRectProps) (shiftRect dRect1) (pure mempty)
->     S.svgRectDyn_ dRect1 >> S.svgRectDyn dRect3 ( pure $ S.Animate =: dAnim )
+>     _ <- S.svgBasicDyn_ S.Rectangle S.makeRectProps dRect1
+>     S.svgBasicDyn S.Rectangle S.makeRectProps dRect3 ( pure $ S.Animate =: dAnim )
 >
 >   pure ()

@@ -14,9 +14,6 @@ module Reflex.Dom.Widget.SVG
   , svg_
   , svgBasicDyn
   , svgBasicDyn_
-  -- Helper functions for basic shapes
-  , svgRectDyn
-  , svgRectDyn_
   ) where
 
 import           Data.Text                   (Text)
@@ -29,8 +26,7 @@ import qualified Reflex.Dom                  as RD
 
 import           Data.Map                    (Map)
 
-import           Reflex.Dom.Widget.SVG.Types (SVG_El, SVG_Rect, makeRectProps,
-                                              makeSVGProps)
+import           Reflex.Dom.Widget.SVG.Types (SVG_El, makeSVGProps)
 
 -- Lawless class to provide a constraint indicating that a given type is capable
 -- of being represented by a SVG XML Tag. <rect>, <circle>, <svg>, etc.
@@ -152,17 +148,17 @@ svgBasicDyn_
 svgBasicDyn_ t propFn dProps =
   svgBasicDyn t propFn dProps (pure mempty)
 
-svgRectDyn_
-  :: MonadWidget t m
-  => Dynamic t SVG_Rect
-  -> m ( SVGEl t BasicSVG )
-svgRectDyn_ =
-  svgBasicDyn_ Rectangle makeRectProps
+-- svgRectDyn_
+--   :: MonadWidget t m
+--   => Dynamic t SVG_Rect
+--   -> m ( SVGEl t BasicSVG )
+-- svgRectDyn_ =
+--   svgBasicDyn_ Rectangle makeRectProps
 
-svgRectDyn
-  :: MonadWidget t m
-  => Dynamic t SVG_Rect
-  -> Dynamic t ( Map BasicInner (Map Text Text) )
-  -> m ( SVGEl t BasicSVG )
-svgRectDyn =
-  svgBasicDyn Rectangle makeRectProps
+-- svgRectDyn
+--   :: MonadWidget t m
+--   => Dynamic t SVG_Rect
+--   -> Dynamic t ( Map BasicInner (Map Text Text) )
+--   -> m ( SVGEl t BasicSVG )
+-- svgRectDyn =
+--   svgBasicDyn Rectangle makeRectProps

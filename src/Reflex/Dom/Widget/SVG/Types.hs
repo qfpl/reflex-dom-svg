@@ -22,6 +22,7 @@ module Reflex.Dom.Widget.SVG.Types
   , module Reflex.Dom.Widget.SVG.Types.SVG_Polygon
   , module Reflex.Dom.Widget.SVG.Types.SVG_PolyLine
   , module Reflex.Dom.Widget.SVG.Types.SVG_Rect
+
   )
   where
 
@@ -33,6 +34,8 @@ import           Data.Map                                 (Map)
 import qualified Data.Map                                 as Map
 
 import           Reflex.Dom.Widget.SVG.Types.Internal
+
+import Reflex.Dom.Widget.SVG.Types.Path
 
 import           Reflex.Dom.Widget.SVG.Types.CornerRadius
 import           Reflex.Dom.Widget.SVG.Types.Pos
