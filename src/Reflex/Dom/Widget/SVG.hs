@@ -8,14 +8,12 @@ module Reflex.Dom.Widget.SVG where
 
 import           Data.Text                   (Text)
 
-import           Reflex                      (Dynamic, MonadHold, PostBuild)
+import           Reflex                      (Dynamic)
 import qualified Reflex                      as R
 
-import           Reflex.Dom                  (DomBuilder, DomBuilderSpace,
-                                              Element, EventResult)
+import           Reflex.Dom                  (DomBuilderSpace, Element,
+                                              EventResult, MonadWidget)
 import qualified Reflex.Dom                  as RD
-
-import           Control.Monad.Fix           (MonadFix)
 
 import           Data.Map                    (Map)
 import qualified Data.Map                    as Map
@@ -65,8 +63,7 @@ data SVGEl t a = SVGEl
   }
 
 svgElDynAttr'
-  :: forall t m a e. ( DomBuilder t m
-                     , PostBuild t m
+  :: forall t m a e. ( MonadWidget t m
                      , AsSVGTag e
                      )
   => e
@@ -78,12 +75,7 @@ svgElDynAttr' = RD.elDynAttrNS'
   . svgTagName
 
 svgElDyn
-  :: ( R.Reflex t
-     , RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
-     , PostBuild t m
-     , MonadFix m
-     , MonadHold t m
+  :: ( MonadWidget t m
      , AsSVGTag a
      , AsSVGTag (CanBeNested a)
      , Ord (CanBeNested a)
@@ -97,12 +89,7 @@ svgElDyn s dSAttrs dInnerElMap =
     (\innerS dInnerAttrs -> fst <$> svgElDynAttr' innerS dInnerAttrs RD.blank)
 
 svgElDynAttrs_
-  :: ( R.Reflex t
-     , RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
-     , PostBuild t m
-     , MonadFix m
-     , MonadHold t m
+  :: ( MonadWidget t m
      , AsSVGTag s
      )
   => s
@@ -113,12 +100,7 @@ svgElDynAttrs_ s dSAttrs = do
   pure ( SVGEl svgEl (pure Map.empty) )
 
 svgElAttrs_
-  :: ( R.Reflex t
-     , RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
-     , PostBuild t m
-     , MonadFix m
-     , MonadHold t m
+  :: ( MonadWidget t m
      , AsSVGTag s
      )
   => s
@@ -128,10 +110,8 @@ svgElAttrs_ s sAttrs =
   svgElDynAttrs_ s ( pure sAttrs )
 
 svg_
-  :: ( RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
+  :: ( MonadWidget t m
      , R.Reflex t
-     , PostBuild t m
      , AsSVGTag a
      )
   => Dynamic t SVG_El
@@ -145,12 +125,7 @@ svg_ dAttrs =
 -- There has to be a nicer way of tying these together :/
 
 svgBasicDyn
-  :: ( RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
-     , R.Reflex t
-     , PostBuild t m
-     , MonadFix m
-     , MonadHold t m
+  :: ( MonadWidget t m
      , AsSVGTag s
      , AsSVGTag (CanBeNested s)
      , Ord (CanBeNested s)
@@ -164,12 +139,7 @@ svgBasicDyn t propFn dProps =
   svgElDyn t (propFn <$> dProps)
 
 svgBasicDyn_
-  :: ( RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
-     , R.Reflex t
-     , PostBuild t m
-     , MonadFix m
-     , MonadHold t m
+  :: ( MonadWidget t m
      , AsSVGTag s
      , AsSVGTag (CanBeNested s)
      , Ord (CanBeNested s)
@@ -183,26 +153,14 @@ svgBasicDyn_ t propFn dProps =
 
 -- Example functions for simple rectangle.
 svgRectDyn_
-  :: ( RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
-     , R.Reflex t
-     , PostBuild t m
-     , MonadFix m
-     , MonadHold t m
-     )
+  :: MonadWidget t m
   => Dynamic t SVG_Rect
   -> m ( SVGEl t BasicSVG )
 svgRectDyn_ =
   svgBasicDyn_ Rectangle makeRectProps
 
 svgRectDyn
-  :: ( RD.DomBuilder t m
-     , RD.DomBuilderSpace m ~ RD.GhcjsDomSpace
-     , R.Reflex t
-     , PostBuild t m
-     , MonadFix m
-     , MonadHold t m
-     )
+  :: MonadWidget t m
   => Dynamic t SVG_Rect
   -> Dynamic t ( Map BasicInner (Map Text Text) )
   -> m ( SVGEl t BasicSVG )

@@ -25,11 +25,9 @@ module Reflex.Dom.Widget.SVG.Types
   )
   where
 
-import           Control.Lens                             (Lens', re, (^.),
-                                                           _Show, _Wrapped)
+import           Control.Lens                             (Lens', (^.))
 
 import           Data.Text                                (Text)
-import           Data.Text.Lens                           (packed)
 
 import           Data.Map                                 (Map)
 import qualified Data.Map                                 as Map
@@ -65,7 +63,7 @@ makeSVGProps
   :: SVG_El
   -> Map Text Text
 makeSVGProps s = Map.fromList
-  [ ("width", s ^. svg_root_width . _Wrapped . re _Show . packed )
-  , ("height", s ^. svg_root_height . _Wrapped . re _Show . packed )
+  [ ("width", s ^. svg_root_width . wrappedToText )
+  , ("height", s ^. svg_root_height . wrappedToText )
   , ("xmlns", "http://www.w3.org/2000/svg" )
   ]
