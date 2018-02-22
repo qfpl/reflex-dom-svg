@@ -1,12 +1,14 @@
+{-# LANGUAGE FlexibleContexts           #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE NoMonomorphismRestriction  #-}
 {-# LANGUAGE OverloadedStrings          #-}
 module Reflex.Dom.Widget.SVG.Types.Path where
 
-import           Control.Lens                         (Prism', prism, ( # ),
-                                                       (^.))
+import           Control.Lens                         (Prism', prism, view,
+                                                       ( # ))
 
-import           Data.List.NonEmpty                   (NonEmpty ((:|)))
+import           Data.List.NonEmpty                   (NonEmpty)
 import qualified Data.List.NonEmpty                   as NE
 
 import           Data.Semigroup                       (Semigroup (..), (<>))
@@ -25,16 +27,13 @@ data PathCommandType
   | LineTo (Pos X) (Pos Y)
   | Horizontal (Pos X)
   | Vertical (Pos Y)
-
-  | Bezier CurveTo
-
-  | ClosePath
-
-data CurveTo
-  = SmthQuadBez (Pos X) (Pos Y)
+  -- Curves!
+  | SmthQuadBez (Pos X) (Pos Y)
   | QuadBez (Pos X) (Pos Y) (Pos X) (Pos Y)
   | SmthCubicBez (Pos X) (Pos Y) (Pos X) (Pos Y)
   | CubicBez (Pos X) (Pos Y) (Pos X) (Pos Y) (Pos X) (Pos Y)
+
+  | ClosePath
 
 data PathCommandRelativity
   = Relative
@@ -46,6 +45,30 @@ data PathCommand
 newtype SVG_Path =
   D (NonEmpty PathCommand)
   deriving Semigroup
+
+_SmthQuadBez :: Prism' PathCommandType (Pos X, Pos Y)
+_SmthQuadBez = prism (uncurry SmthQuadBez)
+  (\case SmthQuadBez x y -> Right (x,y)
+         x               -> Left x
+  )
+
+_QuadBez :: Prism' PathCommandType (Pos X, Pos Y, Pos X, Pos Y)
+_QuadBez = prism (\(x1,y1,x2,y2) -> QuadBez x1 y1 x2 y2)
+  (\case QuadBez x1 y1 x2 y2 -> Right (x1, y1, x2, y2)
+         x                   -> Left x
+  )
+
+_SmthCubicBez :: Prism' PathCommandType (Pos X, Pos Y, Pos X, Pos Y)
+_SmthCubicBez = prism (\(x1,y1,x2,y2) -> SmthCubicBez x1 y1 x2 y2)
+  (\case SmthCubicBez x1 y1 x2 y2 -> Right (x1, y1, x2, y2)
+         x                        -> Left x
+  )
+
+_CubicBez :: Prism' PathCommandType (Pos X, Pos Y, Pos X, Pos Y, Pos X, Pos Y)
+_CubicBez = prism (\(x1,y1,x2,y2,x3,y3) -> CubicBez x1 y1 x2 y2 x3 y3)
+  (\case CubicBez x1 y1 x2 y2 x3 y3 -> Right (x1, y1, x2, y2, x3, y3)
+         x                          -> Left x
+  )
 
 _MoveTo :: Prism' PathCommandType (Pos X, Pos Y)
 _MoveTo = prism (uncurry MoveTo)
@@ -112,26 +135,40 @@ _z = relativePath (_ClosePath # ())
 _Z :: PathCommand
 _Z = notRelativePath (_ClosePath # ())
 
-relativeCommand :: Text -> PathCommandRelativity -> Text
-relativeCommand c' Relative = Text.toLower c'
-relativeCommand c' _        = c'
+rComm :: Text -> PathCommandRelativity -> Text
+rComm c' Relative = Text.toLower c'
+rComm c' _        = c'
 
 pathCommandToText
   :: PathCommandType
   -> PathCommandRelativity
   -> Text
 pathCommandToText pc pcr =
-  case pc of
-    MoveTo x y   ->
-      relativeCommand "M" pcr        <> x ^. wrappedToText <> "," <> y ^. wrappedToText
-    LineTo x y   ->
-      relativeCommand "L" pcr <> " " <> x ^. wrappedToText <> "," <> y ^. wrappedToText
-    Horizontal x ->
-      relativeCommand "H" pcr <> " " <> x ^. wrappedToText
-    Vertical y   ->
-      relativeCommand "V" pcr <> " " <> y ^. wrappedToText
-    ClosePath    ->
-      relativeCommand "Z" pcr
+  let
+    pt = view wrappedToText
+    pt2 x y = pt x <> "," <> pt y
+  in
+    case pc of
+      MoveTo x y ->
+        rComm "M" pcr        <> pt2 x y
+      LineTo x y ->
+        rComm "L" pcr <> " " <> pt2 x y
+      Horizontal x ->
+        rComm "H" pcr <> " " <> pt x
+      Vertical y ->
+        rComm "V" pcr <> " " <> pt y
+
+      SmthQuadBez x y ->
+        rComm "T" pcr <> pt2 x y
+      QuadBez cpx1 cpy1 x y ->
+        rComm "Q" pcr <> pt2 cpx1 cpy1 <> pt2 x y
+      SmthCubicBez cpx2 cpy2 x y ->
+        rComm "S" pcr <> pt2 cpx2 cpy2 <> pt2 x y
+      CubicBez cpx1 cpy1 cpx2 cpy2 x y ->
+        rComm "C" pcr <> pt2 cpx1 cpy1 <> pt2 cpx2 cpy2 <> pt2 x y
+
+      ClosePath ->
+        rComm "Z" pcr
 
 s :: SVG_Path
 s = _D # NE.fromList
@@ -140,3 +177,4 @@ s = _D # NE.fromList
   , _L (_PosX # 15.0) (_PosY # 30.0)
   , _z
   ]
+
