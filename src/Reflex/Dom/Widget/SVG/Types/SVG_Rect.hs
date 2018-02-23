@@ -1,5 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Reflex.Dom.Widget.SVG.Types.SVG_Rect where
+module Reflex.Dom.Widget.SVG.Types.SVG_Rect
+  ( SVG_Rect (..)
+  , svg_rect_pos_x
+  , svg_rect_pos_y
+  , svg_rect_width
+  , svg_rect_height
+  , svg_rect_cornerRadius_x
+  , svg_rect_cornerRadius_y
+  , makeRectProps
+  )
+  where
 
 import           Control.Lens                             (Lens', at, ix, (.~),
                                                            (^.), (^?), _Just)

@@ -1,5 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Reflex.Dom.Widget.SVG.Types.SVG_Line where
+module Reflex.Dom.Widget.SVG.Types.SVG_Line
+  ( SVG_Line (..)
+  , svg_line_pos_end
+  , svg_line_pos_start
+  , makeSVGLineProps
+  ) where
 
 import           Control.Lens                         (Lens', ix, (.~), (^.),
                                                        _1, _2)

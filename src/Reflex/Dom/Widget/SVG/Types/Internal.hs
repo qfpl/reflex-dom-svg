@@ -2,7 +2,13 @@
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Reflex.Dom.Widget.SVG.Types.Internal where
+module Reflex.Dom.Widget.SVG.Types.Internal
+  ( Width (..)
+  , Height (..)
+  , AttributeName (..)
+  , RepeatCount (..)
+  , wrappedToText
+  ) where
 
 import           Control.Lens   (Contravariant, Rewrapped, Wrapped (..), iso,
                                  to, _Wrapped)

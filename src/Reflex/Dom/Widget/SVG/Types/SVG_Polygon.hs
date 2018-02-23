@@ -1,6 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
-module Reflex.Dom.Widget.SVG.Types.SVG_Polygon where
+module Reflex.Dom.Widget.SVG.Types.SVG_Polygon
+  ( SVG_Polygon (..)
+  , svg_polygon_path
+  , svg_polygon_start
+  , makePolygonProps
+  ) where
 
 import           Control.Lens                    (Lens')
 
@@ -25,8 +30,8 @@ svg_polygon_start :: Lens' SVG_Polygon (Pos X, Pos Y)
 svg_polygon_start f (SVG_Polygon x1 x2) = fmap (`SVG_Polygon` x2) (f x1)
 {-# INLINE svg_polygon_start #-}
 
-makeSVGPolygonProps
+makePolygonProps
   :: SVG_Polygon
   -> Map Text Text
-makeSVGPolygonProps SVG_Polygon {..} =
+makePolygonProps SVG_Polygon {..} =
   "points" =: makePointsProp (_svg_polygon_start <| _svg_polygon_path)

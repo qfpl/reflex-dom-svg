@@ -1,6 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
-module Reflex.Dom.Widget.SVG.Types.SVG_PolyLine where
+module Reflex.Dom.Widget.SVG.Types.SVG_PolyLine
+  ( SVG_PolyLine (..)
+  , svg_polyLine_path
+  , svg_polyLine_start
+  , makePolyLineProps
+  ) where
 
 import           Control.Lens                    (Lens')
 
@@ -29,8 +34,8 @@ svg_polyLine_start f (SVG_PolyLine x1 x2)
   = fmap (`SVG_PolyLine` x2) (f x1)
 {-# INLINE svg_polyLine_start #-}
 
-makeSVGPolyLineProps
+makePolyLineProps
   :: SVG_PolyLine
   -> Map Text Text
-makeSVGPolyLineProps SVG_PolyLine {..} =
+makePolyLineProps SVG_PolyLine {..} =
   "points" =: makePointsProp (_svg_polyLine_start <| _svg_polyLine_path)

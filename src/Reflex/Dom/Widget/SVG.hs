@@ -147,18 +147,3 @@ svgBasicDyn_
   -> m ( SVGEl t s )
 svgBasicDyn_ t propFn dProps =
   svgBasicDyn t propFn dProps (pure mempty)
-
--- svgRectDyn_
---   :: MonadWidget t m
---   => Dynamic t SVG_Rect
---   -> m ( SVGEl t BasicSVG )
--- svgRectDyn_ =
---   svgBasicDyn_ Rectangle makeRectProps
-
--- svgRectDyn
---   :: MonadWidget t m
---   => Dynamic t SVG_Rect
---   -> Dynamic t ( Map BasicInner (Map Text Text) )
---   -> m ( SVGEl t BasicSVG )
--- svgRectDyn =
---   svgBasicDyn Rectangle makeRectProps

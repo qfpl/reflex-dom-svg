@@ -6,7 +6,7 @@
 {-# LANGUAGE NoMonomorphismRestriction  #-}
 {-# LANGUAGE OverloadedStrings          #-}
 {-# LANGUAGE TypeFamilies               #-}
-module Reflex.Dom.Widget.SVG.Types.Path
+module Reflex.Dom.Widget.SVG.Types.SVG_Path
   ( PathCommandType (..)
   , PathCommandRelativity (..)
   , SVG_Path (..)

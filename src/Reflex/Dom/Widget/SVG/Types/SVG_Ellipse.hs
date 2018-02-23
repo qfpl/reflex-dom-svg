@@ -1,5 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Reflex.Dom.Widget.SVG.Types.SVG_Ellipse where
+module Reflex.Dom.Widget.SVG.Types.SVG_Ellipse
+  ( SVG_Ellipse (..)
+  , svg_ellipse_radius_x
+  , svg_ellipse_radius_y
+  , svg_ellipse_center_x
+  , svg_ellipse_center_y
+  , makeEllipseProps
+  ) where
 
 import           Control.Lens                         (Lens', ix, (.~), (^.))
 
@@ -12,10 +19,6 @@ import           Reflex.Dom.Widget.SVG.Types.Internal (wrappedToText)
 import           Reflex.Dom.Widget.SVG.Types.Pos      (CenterX, CenterY, Pos, X,
                                                        Y)
 import           Reflex.Dom.Widget.SVG.Types.Radius   (Radius)
-
-
-
-
 
 data SVG_Ellipse = SVG_Ellipse
   { _svg_ellipse_radius_x :: Radius X

@@ -32,6 +32,7 @@ library
                      , Reflex.Dom.Widget.SVG.Types.Pos
                      , Reflex.Dom.Widget.SVG.Types.CornerRadius
                      , Reflex.Dom.Widget.SVG.Types.Radius
+                     , Reflex.Dom.Widget.SVG.Types.SVG_Path
                      , Reflex.Dom.Widget.SVG.Types.SVG_Rect
                      , Reflex.Dom.Widget.SVG.Types.SVG_Circle
                      , Reflex.Dom.Widget.SVG.Types.SVG_Ellipse

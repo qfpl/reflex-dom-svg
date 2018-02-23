@@ -3,7 +3,19 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Reflex.Dom.Widget.SVG.Types.SVG_Animate where
+module Reflex.Dom.Widget.SVG.Types.SVG_Animate
+  ( AnimFrom (..)
+  , AnimTo (..)
+  , AnimDuration (..)
+  , AsAnimDuration (..)
+  , SVG_Animate (..)
+  , svg_animate_attributeName
+  , svg_animate_from
+  , svg_animate_to
+  , svg_animate_dur
+  , svg_animate_repeatCount
+  , makeAnimateProps
+  ) where
 
 import           Control.Lens                         (Lens', Prism', Rewrapped,
                                                        Unwrapped, Wrapped (..),
@@ -44,10 +56,10 @@ data AnimDuration
   = Secs Word16
   | MSecs Word16
 
-class AsAnimDuration r_ac2k where
-  _AnimDuration :: Prism' r_ac2k AnimDuration
-  _Secs :: Prism' r_ac2k Word16
-  _MSecs :: Prism' r_ac2k Word16
+class AsAnimDuration r where
+  _AnimDuration :: Prism' r AnimDuration
+  _Secs :: Prism' r Word16
+  _MSecs :: Prism' r Word16
   _Secs = _AnimDuration . _Secs
   _MSecs = _AnimDuration . _MSecs
 

@@ -1,5 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Reflex.Dom.Widget.SVG.Types.SVG_Circle where
+module Reflex.Dom.Widget.SVG.Types.SVG_Circle
+  ( SVG_Circle (..)
+  , svg_circle_pos_centerX
+  , svg_circle_pos_centerY
+  , svg_circle_radius
+  , makeCircleProps
+  ) where
 
 import           Control.Lens                         (Lens', ix, (.~), (^.))
 
