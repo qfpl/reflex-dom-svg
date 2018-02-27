@@ -49,7 +49,7 @@ the properties of an SVG element as either a static input or a ``Dynamic``.
 
 Additionally there is a (still work-in-progress) API for type safe ``<path>``
 construction in the ``Reflex.Dom.Widget.SVG.Types.SVG_Path`` module. The
-```SVG_Path`` type is a ``newtype`` over a ``NonEmpty PathCommand``, which
+``SVG_Path`` type is a ``newtype`` over a ``NonEmpty PathCommand``, which
 prevents you from having an empty list of Path instructions. As a minimal
 example of using the API as it currently is:
 
