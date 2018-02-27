@@ -66,26 +66,28 @@ instance Wrapped P where
   _Wrapped' = iso (\(P x) -> x) P
 
 data PathCommandType
-  -- Normal line movements
-  = MoveTo P
-  | LineTo P
-  | Horizontal (Pos X)
-  | Vertical (Pos Y)
-  -- Curves!
-  | SmthQuadBez P
-  | QuadBez P P
-  | SmthCubicBez P P
-  | CubicBez P P P
-
-  | ClosePath
+  = MoveTo P            -- ^ Pick up and move the drawing instrument to another position
+  | LineTo P            -- ^ Draw a straight line
+  | Horizontal (Pos X)  -- ^ Straight horizontal line
+  | Vertical (Pos Y)    -- ^ Straight vertical line
+  | SmthQuadBez P       -- ^ Smooth Quadratic Bezier Curve
+  | QuadBez P P         -- ^ Quadratic Bezier Curve using the given control points
+  | SmthCubicBez P P    -- ^ Smooth Cubic Bezier Curve with control points at the end
+  | CubicBez P P P      -- ^ Cubic Bezier Curve with beginning and end control points
+  | ClosePath           -- ^ Draw a straight line from the current position to the first point in the path.
 
 data PathCommandRelativity
-  = Relative
-  | NotRelative
+  = Relative -- ^ Input are considered distances relative to the current position
+  | Absolute -- ^ Input is considered to be an absolute position
 
+-- To be able to describe a path command, we need to know the command you would
+-- like to use (and its inputs). As well as whether or not you're issuing a
+-- relative command, or an absolute one.
 data PathCommand
   = PathComm PathCommandType PathCommandRelativity
 
+-- A wrapper for a list of commands to describe a SVG path. An empty list of
+-- commands doesn't make sense, so you have to construct a @NonEmpty@ list.
 newtype SVG_Path =
   D (NonEmpty PathCommand)
   deriving Semigroup
@@ -148,33 +150,32 @@ _ClosePath = prism (const ClosePath)
 _PathComm :: Prism' PathCommand (PathCommandType, PathCommandRelativity)
 _PathComm = prism (uncurry PathComm) (\(PathComm t r) -> Right (t, r))
 
-notRelativePath, relativePath :: PathCommandType -> PathCommand
+absolutePosition, relativePath :: PathCommandType -> PathCommand
 relativePath pc = _PathComm # (pc, Relative)
-notRelativePath pc = _PathComm # (pc, NotRelative)
+absolutePosition pc = _PathComm # (pc, Absolute)
 
 _m,_M,_l,_L :: Pos X -> Pos Y -> PathCommand
 _m x y = relativePath $ _MoveTo . _Wrapped # (x,y)
-_M x y = notRelativePath $ _MoveTo . _Wrapped # (x,y)
+_M x y = absolutePosition $ _MoveTo . _Wrapped # (x,y)
 _l x y = relativePath $ _LineTo . _Wrapped # (x,y)
-_L x y = notRelativePath $ _LineTo . _Wrapped # (x,y)
+_L x y = absolutePosition $ _LineTo . _Wrapped # (x,y)
 
 _h,_H :: Pos X -> PathCommand
 _h = relativePath . (_Horizontal #)
-_H = notRelativePath . (_Horizontal #)
+_H = absolutePosition . (_Horizontal #)
 
 _v,_V :: Pos Y -> PathCommand
 _v = relativePath . (_Vertical #)
-_V = notRelativePath . (_Vertical #)
+_V = absolutePosition . (_Vertical #)
 
 _z,_Z :: PathCommand
 _z = relativePath (_ClosePath # ())
-_Z = notRelativePath (_ClosePath # ())
+_Z = absolutePosition (_ClosePath # ())
 
 pathCommandToText
-  :: PathCommandType
-  -> PathCommandRelativity
+  :: PathCommand
   -> Text
-pathCommandToText pc pcr =
+pathCommandToText ( PathComm pc pcr ) =
   let
     rComm c' Relative = Text.toLower c'
     rComm c' _        = c'
@@ -203,8 +204,4 @@ makePathProps
   :: SVG_Path
   -> Map Text Text
 makePathProps p =
-  let
-    pcs = p ^.. _Wrapped . traverse . _PathComm . to (uncurry pathCommandToText)
-  in
-    "d" =: Text.unwords pcs
-
+  "d" =: Text.unwords ( p ^.. _Wrapped . traverse . to pathCommandToText )
