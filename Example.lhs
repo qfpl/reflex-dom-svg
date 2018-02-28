@@ -33,8 +33,8 @@ Create a normal ``Map`` of HTML attributes to apply to the shape
 Build our first ``<rect>``.
 
 >     dRect1 = pure $ S.SVG_Rect
->       (40.0 ^. from S._PosX)
->       (40.0 ^. from S._PosY)
+>       (S._PosX # 40.0)
+>       (S._PosY # 40.0)
 >       (S.Width 50.0)
 >       (S.Height 50.0)
 >       Nothing
@@ -50,8 +50,8 @@ We can use lenses to modify the properties of our shape.
 We can also define a ``<rect>`` with corner radius.
 
 >     dRect3 = pure $ S.SVG_Rect
->       (20.0 ^. from S._PosX)
->       (20.0 ^. from S._PosY)
+>       (S._PosX # 20.0)
+>       (S._PosY # 20.0)
 >       (S.Width 30.0)
 >       (S.Height 30.0)
 >       (15.0 ^? from S._CornerRadiusX)

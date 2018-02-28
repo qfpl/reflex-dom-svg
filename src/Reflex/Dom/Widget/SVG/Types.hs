@@ -3,6 +3,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE TypeFamilies          #-}
+-- | Contains the root \<svg\> element properties and re-exports all of the individual SVG Types
 module Reflex.Dom.Widget.SVG.Types
   ( SVG_El (..)
   , svg_root_width
@@ -49,19 +50,23 @@ import           Reflex.Dom.Widget.SVG.Types.SVG_Polygon
 import           Reflex.Dom.Widget.SVG.Types.SVG_PolyLine
 import           Reflex.Dom.Widget.SVG.Types.SVG_Rect
 
+-- | Minimum information required for building a SVG root element.
 data SVG_El = SVG_El
   { _svg_root_width  :: Width
   , _svg_root_height :: Height
   }
 
+-- | Lens for @Height@ attribute on @SVG_El@
 svg_root_height :: Lens' SVG_El Height
 svg_root_height f (SVG_El x1 x2) = fmap (SVG_El x1) (f x2)
 {-# INLINE svg_root_height #-}
 
+-- | Lens for @Width@ attribute on @SVG_El@
 svg_root_width :: Lens' SVG_El Width
 svg_root_width f (SVG_El x1 x2) = fmap (`SVG_El` x2) (f x1)
 {-# INLINE svg_root_width #-}
 
+-- | Convert the record to the correct attribute map for Reflex.
 makeSVGProps
   :: SVG_El
   -> Map Text Text

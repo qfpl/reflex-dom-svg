@@ -2,6 +2,8 @@
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies          #-}
+-- | Miscellaneous types and functions of the API. This module is named Internal
+-- as it is possible it will change.
 module Reflex.Dom.Widget.SVG.Types.Internal
   ( Width (..)
   , Height (..)
@@ -16,8 +18,11 @@ import           Control.Lens   (Contravariant, Rewrapped, Wrapped (..), iso,
 import           Data.Text      (Text)
 import           Data.Text.Lens (IsText, packed)
 
+-- | Wrap the @Float@ value with something more meaningful.
 newtype Width         = Width Float
+-- | Wrap the @Float@ value with something more meaningful.
 newtype Height        = Height Float
+-- | Wrap the @Text@ value with something more meaningful.
 newtype AttributeName = AttributeName Text
 
 instance Width ~ t => Rewrapped Width t
@@ -35,6 +40,7 @@ instance Wrapped AttributeName where
   type Unwrapped AttributeName = Text
   _Wrapped' = iso (\ (AttributeName x) -> x) AttributeName
 
+-- | Capture the information about the <https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/repeatCount repeatCount> attribute.
 data RepeatCount
   = NumOfTimes Word
   | Indefinite
@@ -43,6 +49,7 @@ instance Show RepeatCount where
   show (NumOfTimes n) = show n
   show Indefinite     = "indefinite"
 
+-- | Helper function to convert a @Wrapped@ value to a @Text@ value.
 wrappedToText
   :: ( Unwrapped t ~ Unwrapped s
      , IsText t1
