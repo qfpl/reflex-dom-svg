@@ -3,7 +3,7 @@
 }:
 mkDerivation {
   pname = "reflex-dom-svg";
-  version = "0.1.0.0";
+  version = "0.1.2.0";
   src = ./.;
   libraryHaskellDepends = [
     base containers lens reflex reflex-dom safe text

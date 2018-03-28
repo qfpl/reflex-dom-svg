@@ -8,7 +8,7 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Circle
   , makeCircleProps
   ) where
 
-import           Control.Lens                         (Lens', ix, (.~), (^.))
+import           Control.Lens                         (Lens', at, (^.))
 
 import           Data.Function                        ((&))
 
@@ -50,6 +50,6 @@ makeCircleProps
   :: SVG_Circle
   -> Map Text Text
 makeCircleProps c = mempty
-  & ix "cx" .~ c ^. svg_circle_pos_centerX . wrappedToText
-  & ix "cy" .~ c ^. svg_circle_pos_centerY . wrappedToText
-  & ix "r"  .~ c ^. svg_circle_radius . wrappedToText
+  & at "cx" ?~ c ^. svg_circle_pos_centerX . wrappedToText
+  & at "cy" ?~ c ^. svg_circle_pos_centerY . wrappedToText
+  & at "r"  ?~ c ^. svg_circle_radius . wrappedToText

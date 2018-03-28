@@ -27,8 +27,8 @@ Construct the ``<svg>`` element.
 Create a normal ``Map`` of HTML attributes to apply to the shape
 
 >     attrs = mempty
->       & ix "id" .~ "svg1"
->       & ix "class" .~ "blue no-yellow"
+>       & at "id" ?~ "svg1"
+>       & at "class" ?~ "blue no-yellow"
 
 Build our first ``<rect>``.
 

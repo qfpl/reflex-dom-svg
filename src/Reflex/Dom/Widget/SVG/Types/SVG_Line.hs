@@ -7,7 +7,7 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Line
   , makeSVGLineProps
   ) where
 
-import           Control.Lens                         (Lens', ix, (.~), (^.),
+import           Control.Lens                         (Lens', at, (?~), (^.),
                                                        _1, _2)
 
 import           Data.Function                        ((&))
@@ -42,7 +42,7 @@ makeSVGLineProps
   :: SVG_Line
   -> Map Text Text
 makeSVGLineProps l = mempty
-  & ix "x1" .~ l ^. svg_line_pos_start . _1 . wrappedToText
-  & ix "y1" .~ l ^. svg_line_pos_start . _2 . wrappedToText
-  & ix "x2" .~ l ^. svg_line_pos_end . _1 . wrappedToText
-  & ix "y2" .~ l ^. svg_line_pos_end . _2 . wrappedToText
+  & at "x1" ?~ l ^. svg_line_pos_start . _1 . wrappedToText
+  & at "y1" ?~ l ^. svg_line_pos_start . _2 . wrappedToText
+  & at "x2" ?~ l ^. svg_line_pos_end . _1 . wrappedToText
+  & at "y2" ?~ l ^. svg_line_pos_end . _2 . wrappedToText

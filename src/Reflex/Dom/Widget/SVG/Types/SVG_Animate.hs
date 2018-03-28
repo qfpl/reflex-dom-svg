@@ -20,8 +20,8 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Animate
 
 import           Control.Lens                         (Lens', Prism', Rewrapped,
                                                        Unwrapped, Wrapped (..),
-                                                       iso, ix, prism, re, to,
-                                                       (.~), (^.), _Wrapped)
+                                                       at, iso, prism, re, to,
+                                                       (?~), (^.), _Wrapped)
 
 import           Data.Function                        ((&))
 
@@ -136,8 +136,8 @@ makeAnimateProps
   :: SVG_Animate
   -> Map Text Text
 makeAnimateProps a = mempty
-  & ix "attributeName" .~ a ^. svg_animate_attributeName . _Wrapped
-  & ix "from"          .~ a ^. svg_animate_from . wrappedToText
-  & ix "to"            .~ a ^. svg_animate_to . wrappedToText
-  & ix "dur"           .~ a ^. svg_animate_dur . re _AnimDuration
-  & ix "repeatCount"   .~ a ^. svg_animate_repeatCount . to show . packed
+  & at "attributeName" ?~ a ^. svg_animate_attributeName . _Wrapped
+  & at "from"          ?~ a ^. svg_animate_from . wrappedToText
+  & at "to"            ?~ a ^. svg_animate_to . wrappedToText
+  & at "dur"           ?~ a ^. svg_animate_dur . re _AnimDuration
+  & at "repeatCount"   ?~ a ^. svg_animate_repeatCount . to show . packed

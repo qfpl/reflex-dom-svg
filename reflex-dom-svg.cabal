@@ -1,5 +1,5 @@
 name:                reflex-dom-svg
-version:             0.1.0.0
+version:             0.1.1.0
 synopsis:            Reflex functions for SVG elements.
 description:
   <<http://i.imgur.com/uZnp9ke.png>>

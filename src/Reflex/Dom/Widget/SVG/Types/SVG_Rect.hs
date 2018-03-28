@@ -12,8 +12,9 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Rect
   )
   where
 
-import           Control.Lens                             (Lens', at, ix, (.~),
-                                                           (^.), (^?), _Just)
+import           Control.Lens                             (Lens', at, (.~),
+                                                           (?~), (^.), (^?),
+                                                           _Just)
 
 import           Data.Function                            ((&))
 
@@ -78,9 +79,9 @@ makeRectProps
   :: SVG_Rect
   -> Map Text Text
 makeRectProps r = mempty
-  & ix "x" .~ r ^. svg_rect_pos_x . wrappedToText
-  & ix "y" .~ r ^. svg_rect_pos_y . wrappedToText
-  & ix "width" .~ r ^. svg_rect_width . wrappedToText
-  & ix "height" .~ r ^. svg_rect_height . wrappedToText
+  & at "x" ?~ r ^. svg_rect_pos_x . wrappedToText
+  & at "y" ?~ r ^. svg_rect_pos_y . wrappedToText
+  & at "width" ?~ r ^. svg_rect_width . wrappedToText
+  & at "height" ?~ r ^. svg_rect_height . wrappedToText
   & at "rx" .~ r ^? svg_rect_cornerRadius_x . _Just . wrappedToText
   & at "ry" .~ r ^? svg_rect_cornerRadius_y . _Just . wrappedToText

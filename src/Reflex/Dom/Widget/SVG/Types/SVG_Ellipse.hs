@@ -9,7 +9,7 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Ellipse
   , makeEllipseProps
   ) where
 
-import           Control.Lens                         (Lens', ix, (.~), (^.))
+import           Control.Lens                         (Lens', at, (?~), (^.))
 
 import           Data.Function                        ((&))
 import           Data.Map                             (Map)
@@ -58,7 +58,7 @@ makeEllipseProps
   :: SVG_Ellipse
   -> Map Text Text
 makeEllipseProps e = mempty
-  & ix "cx" .~ e ^. svg_ellipse_center_x . wrappedToText
-  & ix "cx" .~ e ^. svg_ellipse_center_y . wrappedToText
-  & ix "rx" .~ e ^. svg_ellipse_radius_x . wrappedToText
-  & ix "ry" .~ e ^. svg_ellipse_radius_y . wrappedToText
+  & at "cx" ?~ e ^. svg_ellipse_center_x . wrappedToText
+  & at "cx" ?~ e ^. svg_ellipse_center_y . wrappedToText
+  & at "rx" ?~ e ^. svg_ellipse_radius_x . wrappedToText
+  & at "ry" ?~ e ^. svg_ellipse_radius_y . wrappedToText
