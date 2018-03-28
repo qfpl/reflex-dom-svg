@@ -8,7 +8,7 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Circle
   , makeCircleProps
   ) where
 
-import           Control.Lens                         (Lens', at, (^.))
+import           Control.Lens                         (Lens', at, (?~), (^.))
 
 import           Data.Function                        ((&))
 
