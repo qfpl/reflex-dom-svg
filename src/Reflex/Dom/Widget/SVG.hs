@@ -15,6 +15,8 @@ module Reflex.Dom.Widget.SVG
   , svg_
   , svgBasicDyn
   , svgBasicDyn_
+  , svgElDynAttr'
+  , svgElDynAttr_
   ) where
 
 import           Data.Text                   (Text)
@@ -81,6 +83,9 @@ data SVGEl t a = SVGEl
   , _svgEl_children :: Dynamic t (Map (CanBeNested a) (RD.El t))
   }
 
+svgXMLNamespace :: Text
+svgXMLNamespace = "http://www.w3.org/2000/svg"
+
 -- | This is for creating a SVG element with @Dynamic@ attributes, and ensuring we
 -- use the right namespace so the browser actually picks up on it. The name
 -- space in use is "http://www.w3.org/2000/svg".
@@ -93,8 +98,22 @@ svgElDynAttr'
   -> m a
   -> m (El t, a)
 svgElDynAttr' = RD.elDynAttrNS'
-  ( Just "http://www.w3.org/2000/svg" )
+  (Just svgXMLNamespace)
   . svgTagName
+
+-- | As per @svgElDynAttr'@, but does not have any children.
+svgElDynAttr_
+  :: forall t m e. ( MonadWidget t m
+                   , AsSVGTag e
+                   )
+  => e
+  -> Dynamic t (Map Text Text)
+  -> m (El t)
+svgElDynAttr_ t dAttrs = fst <$> RD.elDynAttrNS'
+  (Just svgXMLNamespace)
+  (svgTagName t)
+  dAttrs
+  RD.blank
 
 -- | Create the Root SVG element.
 --

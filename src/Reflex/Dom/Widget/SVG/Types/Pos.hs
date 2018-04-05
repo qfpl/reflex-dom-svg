@@ -14,6 +14,7 @@ module Reflex.Dom.Widget.SVG.Types.Pos
   , _PosY
   , _PosCenterX
   , _PosCenterY
+  , changePosType
   , makePointsProp
   )
   where
@@ -50,6 +51,10 @@ instance (Pos p) ~ t => Rewrapped (Pos p) t
 instance Wrapped (Pos p) where
   type Unwrapped (Pos p) = Float
   _Wrapped' = iso (\(Pos x) -> x) Pos
+
+-- | Change the @Pos@ index type
+changePosType :: Pos a -> Pos b
+changePosType (Pos p) = Pos p
 
 -- | Specific Iso for describing a X coordinate
 _PosX :: Iso' (Pos X) Float
