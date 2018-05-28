@@ -51,7 +51,7 @@ import           Data.Semigroup                       (Semigroup (..), (<>))
 import           Data.Text                            (Text)
 import qualified Data.Text                            as Text
 
-import           Reflex.Dom                           ((=:))
+import           Reflex.Dom.Core                      ((=:))
 
 import           Reflex.Dom.Widget.SVG.Types.Internal (wrappedToText)
 import           Reflex.Dom.Widget.SVG.Types.Pos      (Pos, X, Y)

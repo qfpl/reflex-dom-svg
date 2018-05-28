@@ -21,7 +21,7 @@ import           Data.Text                       (Text)
 
 import           Data.List.NonEmpty              (NonEmpty, (<|))
 
-import           Reflex.Dom                      ((=:))
+import           Reflex.Dom.Core                 ((=:))
 
 import           Reflex.Dom.Widget.SVG.Types.Pos (Pos, X, Y, makePointsProp)
 

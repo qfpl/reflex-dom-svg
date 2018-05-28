@@ -24,8 +24,8 @@ import           Data.Text                   (Text)
 import           Reflex                      (Dynamic)
 import qualified Reflex                      as R
 
-import           Reflex.Dom                  (El, MonadWidget)
-import qualified Reflex.Dom                  as RD
+import           Reflex.Dom.Core             (El, MonadWidget)
+import qualified Reflex.Dom.Core             as RD
 
 import           Data.Map                    (Map)
 
