@@ -17,6 +17,7 @@ import           Reflex.Dom.Widget.SVG.Types.Pos (X, Y)
 -- | Corner Radius is effectively just a @Float@, but we can do better.
 newtype CornerRadius p =
   CornerRadius Float
+  deriving (Eq, Show)
 
 instance (CornerRadius p) ~ t => Rewrapped (CornerRadius p) t
 

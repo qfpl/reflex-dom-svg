@@ -30,6 +30,7 @@ data SVG_PolyLine = SVG_PolyLine
   { _svg_polyLine_start :: (Pos X, Pos Y)
   , _svg_polyLine_path  :: NonEmpty (Pos X, Pos Y)
   }
+  deriving (Eq, Show)
 
 -- | Lens for the list of @(Pos X, Pos Y)@ of an @SVG_PolyLine@ path attribute.
 svg_polyLine_path :: Lens' SVG_PolyLine (NonEmpty (Pos X, Pos Y))

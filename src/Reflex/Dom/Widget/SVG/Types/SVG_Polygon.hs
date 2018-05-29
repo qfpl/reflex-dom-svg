@@ -27,6 +27,7 @@ data SVG_Polygon = SVG_Polygon
   { _svg_polygon_start :: (Pos X, Pos Y)
   , _svg_polygon_path  :: NonEmpty (Pos X, Pos Y)
   }
+  deriving (Eq, Show)
 
 -- | Lens for the list of @(Pos X, Pos Y)@ of an @SVG_Polygon@ path attribute.
 svg_polygon_path :: Lens' SVG_Polygon (NonEmpty (Pos X, Pos Y))

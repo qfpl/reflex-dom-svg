@@ -42,10 +42,10 @@ import           Reflex.Dom.Widget.SVG.Types.Internal (AttributeName (..),
                                                        wrappedToText)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/from from> attribute
-newtype AnimFrom      = AnimFrom Word16
+newtype AnimFrom      = AnimFrom Word16 deriving (Eq, Show)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/to to> attribute
-newtype AnimTo        = AnimTo Word16
+newtype AnimTo        = AnimTo Word16 deriving (Eq, Show)
 
 instance AnimFrom ~ t => Rewrapped AnimFrom t
 instance Wrapped AnimFrom where
@@ -62,6 +62,7 @@ instance Wrapped AnimTo where
 data AnimDuration
   = Secs Word16
   | MSecs Word16
+  deriving (Eq, Show)
 
 -- | Classy Prism set for the @AnimDuration@ type
 class AsAnimDuration r where
@@ -100,6 +101,7 @@ data SVG_Animate = SVG_Animate
   , _svg_animate_dur           :: AnimDuration
   , _svg_animate_repeatCount   :: RepeatCount
   }
+  deriving (Eq, Show)
 
 -- | Lens for the @AttirbuteName@ of an @SVG_Animate@ element.
 svg_animate_attributeName :: Lens' SVG_Animate AttributeName

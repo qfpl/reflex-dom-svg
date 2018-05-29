@@ -26,6 +26,8 @@ data SVG_Circle = SVG_Circle
   , _svg_circle_pos_centerY :: Pos CenterY
   , _svg_circle_radius      :: Radius ()
   }
+  deriving (Eq, Show)
+
 
 -- | Lens for the Center X position of an @SVG_Circle@
 svg_circle_pos_centerX :: Lens' SVG_Circle (Pos CenterX)

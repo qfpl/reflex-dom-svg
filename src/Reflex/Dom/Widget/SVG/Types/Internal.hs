@@ -19,11 +19,11 @@ import           Data.Text      (Text)
 import           Data.Text.Lens (IsText, packed)
 
 -- | Wrap the @Float@ value with something more meaningful.
-newtype Width         = Width Float
+newtype Width         = Width Float deriving (Eq, Show)
 -- | Wrap the @Float@ value with something more meaningful.
-newtype Height        = Height Float
+newtype Height        = Height Float deriving (Eq, Show)
 -- | Wrap the @Text@ value with something more meaningful.
-newtype AttributeName = AttributeName Text
+newtype AttributeName = AttributeName Text deriving (Eq, Show)
 
 instance Width ~ t => Rewrapped Width t
 instance Wrapped Width where
@@ -44,6 +44,7 @@ instance Wrapped AttributeName where
 data RepeatCount
   = NumOfTimes Word
   | Indefinite
+  deriving Eq
 
 instance Show RepeatCount where
   show (NumOfTimes n) = show n

@@ -71,6 +71,7 @@ data ViewBox = ViewBox
   , _viewBox_width  :: Width
   , _viewBox_height :: Height
   }
+  deriving (Eq, Show)
 
 -- | Lens for @_viewBox_min_X@ attribute on @ViewBox@
 viewBox_min_x :: Lens' ViewBox Float
@@ -98,6 +99,7 @@ data SVG_El = SVG_El
   , _svg_root_height :: Height
   , _svg_view_box    :: Maybe ViewBox
   }
+  deriving (Eq, Show)
 
 -- | Lens for @Height@ attribute on @SVG_El@
 svg_root_height :: Lens' SVG_El Height

@@ -37,6 +37,7 @@ data SVG_Rect = SVG_Rect
   , _svg_rect_cornerRadius_x :: Maybe (CornerRadius X) -- ^ Optional rounded corner radius
   , _svg_rect_cornerRadius_y :: Maybe (CornerRadius Y) -- ^ Optional rounded corner radius
   }
+  deriving (Eq, Show)
 
 -- | Lens for the X corner radius
 svg_rect_cornerRadius_x :: Lens' SVG_Rect (Maybe (CornerRadius X))

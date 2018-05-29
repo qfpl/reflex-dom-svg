@@ -24,6 +24,7 @@ data SVG_Line = SVG_Line
   { _svg_line_pos_start :: ( Pos X, Pos Y )
   , _svg_line_pos_end   :: ( Pos X, Pos Y )
   }
+  deriving (Eq, Show)
 
 -- | Lens for the end of the @SVG_Line@
 svg_line_pos_end :: Lens' SVG_Line (Pos X, Pos Y)

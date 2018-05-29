@@ -45,6 +45,7 @@ data CenterY
 -- about the specific position we're interested in.
 newtype Pos p =
   Pos Float
+  deriving (Eq, Show)
 
 instance (Pos p) ~ t => Rewrapped (Pos p) t
 

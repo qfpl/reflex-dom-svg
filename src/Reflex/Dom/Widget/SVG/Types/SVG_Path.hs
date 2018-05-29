@@ -59,6 +59,7 @@ import           Reflex.Dom.Widget.SVG.Types.Pos      (Pos, X, Y)
 -- | For a bit of brevity we wrap a combined X,Y position in a tuple tucked in a newtype.
 newtype P =
   P (Pos X, Pos Y)
+  deriving (Eq, Show)
 
 instance P ~ t => Rewrapped P t
 
@@ -77,24 +78,27 @@ data PathCommandType
   | SmthCubicBez P P    -- ^ Smooth Cubic Bezier Curve with control points at the end
   | CubicBez P P P      -- ^ Cubic Bezier Curve with beginning and end control points
   | ClosePath           -- ^ Draw a straight line from the current position to the first point in the path.
+  deriving (Eq, Show)
 
 -- | Indicates if a given command is expected to distances from the current
 --   position or be set coordinates. See the <https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d documentation> for more.
 data PathCommandRelativity
   = Relative -- ^ Input are considered distances relative to the current position
   | Absolute -- ^ Input is considered to be an absolute position
+  deriving (Eq, Show)
 
 -- | To be able to describe a path command, we need to know the command you would
 --   like to use (and its inputs). As well as whether or not you're issuing a
 --   relative command, or an absolute one.
 data PathCommand
   = PathComm PathCommandType PathCommandRelativity
+  deriving (Eq, Show)
 
 -- | A wrapper for a list of commands to describe a SVG path. An empty list of
 -- commands doesn't make sense, so you have to construct a @NonEmpty@ list.
 newtype SVG_Path =
   D (NonEmpty PathCommand)
-  deriving Semigroup
+  deriving (Eq, Show, Semigroup)
 
 instance SVG_Path ~ t => Rewrapped SVG_Path t
 

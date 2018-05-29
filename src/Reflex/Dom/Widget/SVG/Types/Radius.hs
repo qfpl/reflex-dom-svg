@@ -18,6 +18,7 @@ import           Reflex.Dom.Widget.SVG.Types.Pos (X, Y)
 -- it up in a @newtype@ to keep things organised.
 newtype Radius p =
   Radius Float
+  deriving (Eq, Show)
 
 instance (Radius p) ~ t => Rewrapped (Radius p) t
 

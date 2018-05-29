@@ -28,6 +28,7 @@ data SVG_Ellipse = SVG_Ellipse
   , _svg_ellipse_center_x :: Pos CenterX
   , _svg_ellipse_center_y :: Pos CenterY
   }
+  deriving (Eq, Show)
 
 -- | Lens for the Center X position of an @SVG_Ellipse@
 svg_ellipse_center_x :: Lens' SVG_Ellipse (Pos CenterX)
