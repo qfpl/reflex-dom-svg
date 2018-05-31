@@ -36,8 +36,8 @@ module Reflex.Dom.Widget.SVG.Types
   )
   where
 
-import           Control.Lens                             (Lens', at, to, (?~),
-                                                           (^.), _Just,
+import           Control.Lens                             (Lens', at, to, (.~),
+                                                           (^.), (^?), _Just,
                                                            _Wrapped)
 
 import           Data.Function                            ((&))
@@ -135,4 +135,4 @@ makeSVGProps s = Map.fromList
   , ("height", s ^. svg_root_height . wrappedToText )
   , ("xmlns", "http://www.w3.org/2000/svg" )
   ]
-  & at "viewBox" ?~ (s ^. svg_root_viewbox . _Just . to makeViewBox)
+  & at "viewBox" .~ s ^? svg_root_viewbox . _Just . to makeViewBox
