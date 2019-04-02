@@ -20,7 +20,7 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Animate
 
 import           Control.Lens                         (Lens', Prism', Rewrapped,
                                                        Unwrapped, Wrapped (..),
-                                                       at, iso, prism, re, to,
+                                                       at, iso, prism, re, to, failing,
                                                        (?~), (^.), _Wrapped)
 
 import           Data.Function                        ((&))
@@ -89,9 +89,19 @@ toText s = pack . (<> s) . show
 fromText :: Text -> Either Text Word16
 fromText = first pack . readEitherSafe . unpack
 
-instance AsAnimDuration Text where
-  _Secs = prism (toText "s") fromText
-  _MSecs = prism (toText "ms") fromText
+animDurationToText :: AnimDuration -> Text
+animDurationToText (Secs s) = toText "s" s
+animDurationToText (MSecs ms) = toText "ms" ms
+
+-- instance AsAnimDuration Text where
+--   _AnimDuration = prism
+--     (\case Secs s -> toText "s" s
+--            MSecs ms -> toText "ms" ms
+--     )
+--     _g
+    
+--   _Secs = prism (toText "s") fromText
+--   _MSecs = prism (toText "ms") fromText
 
 -- | Properties for the <https://developer.mozilla.org/en-US/docs/Web/SVG/Element/animate \<animate\>> element.
 data SVG_Animate = SVG_Animate
@@ -141,5 +151,5 @@ makeAnimateProps a = mempty
   & at "attributeName" ?~ a ^. svg_animate_attributeName . _Wrapped
   & at "from"          ?~ a ^. svg_animate_from . wrappedToText
   & at "to"            ?~ a ^. svg_animate_to . wrappedToText
-  & at "dur"           ?~ a ^. svg_animate_dur . re _AnimDuration
+  & at "dur"           ?~ a ^. svg_animate_dur . to animDurationToText
   & at "repeatCount"   ?~ a ^. svg_animate_repeatCount . to show . packed
