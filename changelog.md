@@ -1,3 +1,8 @@
+0.3.2.0
+
+* Fixed issue preventing 'animate' tag attributes from being generated
+* Removed an instance of as AnimDuration for Text
+
 0.2.0.0
 
 * Add "viewBox" property support for root SVG tag. This breaks existing SVG_El definitions.

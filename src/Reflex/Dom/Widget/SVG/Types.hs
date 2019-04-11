@@ -116,6 +116,7 @@ svg_root_viewbox :: Lens' SVG_El ( Maybe ViewBox )
 svg_root_viewbox f (SVG_El x1 x2 v) = fmap (SVG_El x1 x2) (f v)
 {-# INLINE svg_root_viewbox #-}
 
+-- | Convert a 'ViewBox' to the attribute text representation.
 makeViewBox
   :: ViewBox
   -> Text

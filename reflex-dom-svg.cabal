@@ -12,8 +12,8 @@ maintainer:          Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞs�
 copyright:           Copyright (c) 2018, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230.
 category:            FRP,Web,Graphics
 build-type:          Simple
-extra-source-files:  ChangeLog.md
-cabal-version:       >=1.24
+extra-source-files:  README.md, changelog.md
+cabal-version:       >= 1.10
 
 source-repository   head
   type:             git
