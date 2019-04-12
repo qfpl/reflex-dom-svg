@@ -53,12 +53,19 @@ We can also define a ``<rect>`` with corner radius.
 >     dRect3 = pure $ S.SVG_Rect
 >       (S._PosX # 20.0)
 >       (S._PosY # 20.0)
->       (S.Width 30.0)
->       (S.Height 30.0)
+>       (S.Width 50.0)
+>       (S.Height 50.0)
 >       (15.0 ^? from S._CornerRadiusX)
 >       (15.0 ^? from S._CornerRadiusY)
 
 This is the same as <rect x="40" y="40" height="50" width="50" cx="15" cy="15">.
+
+Build a ``<circle>``.
+
+>     dCircle = pure $ S.SVG_Circle
+>       (S._PosCenterX # 200.0)
+>       (S._PosCenterY # 200.0)
+>       (S._Radius # 70.0)
 
 We can also build some ``Dynamic`` animation element properties:
 
@@ -76,6 +83,7 @@ Finally, put it all together for ``Reflex.Dom`` to add to our page.
 >   _ <- S.svg_ dSvgProps $ do
 >     _ <- S.svgBasicDyn S.Rectangle (mappend attrs . S.makeRectProps) (shiftRect dRect1) (pure mempty)
 >     _ <- S.svgBasicDyn_ S.Rectangle S.makeRectProps dRect1
+>     _ <- S.svgBasicDyn_ S.Circle S.makeCircleProps dCircle
 >     S.svgBasicDyn S.Rectangle S.makeRectProps dRect3 ( pure $ S.Animate =: dAnim )
 >
 >   pure ()
