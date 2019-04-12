@@ -46,7 +46,7 @@ This is the same as writing: <rect x="40" y="40" height="50" width="50">.
 We can use lenses to modify the properties of our shape.
 
 >     shiftRect :: Dynamic t SVG_Rect -> Dynamic t SVG_Rect
->     shiftRect = fmap (S.svg_rect_pos_x . S._PosX +~ 3.0)
+>     shiftRect = fmap (S.svg_rect_pos_x . S._PosX +~ 70.0)
 
 We can also define a ``<rect>`` with corner radius.
 
@@ -58,7 +58,7 @@ We can also define a ``<rect>`` with corner radius.
 >       (15.0 ^? from S._CornerRadiusX)
 >       (15.0 ^? from S._CornerRadiusY)
 
-This is the same as <rect x="40" y="40" height="50" width="50" cx="15" cy="15">.
+This is the same as <rect x="20" y="20" height="50" width="50" rx="15" ry="15">.
 
 Build a ``<circle>``.
 
@@ -66,6 +66,8 @@ Build a ``<circle>``.
 >       (S._PosCenterX # 200.0)
 >       (S._PosCenterY # 200.0)
 >       (S._Radius # 70.0)
+
+This is the same as writing: <circle cx="200" cy="200" r="70">.
 
 We can also build some ``Dynamic`` animation element properties:
 
