@@ -60,6 +60,6 @@ makeEllipseProps
   -> Map Text Text
 makeEllipseProps e = mempty
   & at "cx" ?~ e ^. svg_ellipse_center_x . wrappedToText
-  & at "cx" ?~ e ^. svg_ellipse_center_y . wrappedToText
+  & at "cy" ?~ e ^. svg_ellipse_center_y . wrappedToText
   & at "rx" ?~ e ^. svg_ellipse_radius_x . wrappedToText
   & at "ry" ?~ e ^. svg_ellipse_radius_y . wrappedToText

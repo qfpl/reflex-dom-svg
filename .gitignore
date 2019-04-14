@@ -17,6 +17,7 @@ cabal.sandbox.config
 *.eventlog
 .stack-work/
 cabal.project.local
+examples/cabal.project.local*
 .HTF/
 .ghc.environment.*
 # Nix bits

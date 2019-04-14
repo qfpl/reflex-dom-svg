@@ -5,6 +5,7 @@
 -- | Types and function for the @Radius@ wrapper.
 module Reflex.Dom.Widget.SVG.Types.Radius
   ( Radius
+  , _Radius
   , _RadiusX
   , _RadiusY
   ) where
@@ -25,6 +26,10 @@ instance (Radius p) ~ t => Rewrapped (Radius p) t
 instance Wrapped (Radius p) where
   type Unwrapped (Radius p) = Float
   _Wrapped' = iso (\(Radius x) -> x) Radius
+
+-- | Iso for the float value of a radius
+_Radius :: Iso' (Radius ()) Float
+_Radius = _Wrapped
 
 -- | Iso for the float value of an X position radius
 _RadiusX :: Iso' (Radius X) Float

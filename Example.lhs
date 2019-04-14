@@ -23,6 +23,7 @@ Construct the ``<svg>`` element.
 >     dSvgProps = pure $ S.SVG_El
 >       (S.Width 400)
 >       (S.Height 300)
+>       Nothing
 
 Create a normal ``Map`` of HTML attributes to apply to the shape
 
@@ -45,19 +46,28 @@ This is the same as writing: <rect x="40" y="40" height="50" width="50">.
 We can use lenses to modify the properties of our shape.
 
 >     shiftRect :: Dynamic t SVG_Rect -> Dynamic t SVG_Rect
->     shiftRect = fmap (S.svg_rect_pos_x . S._PosX +~ 3.0)
+>     shiftRect = fmap (S.svg_rect_pos_x . S._PosX +~ 70.0)
 
 We can also define a ``<rect>`` with corner radius.
 
 >     dRect3 = pure $ S.SVG_Rect
 >       (S._PosX # 20.0)
 >       (S._PosY # 20.0)
->       (S.Width 30.0)
->       (S.Height 30.0)
+>       (S.Width 50.0)
+>       (S.Height 50.0)
 >       (15.0 ^? from S._CornerRadiusX)
 >       (15.0 ^? from S._CornerRadiusY)
 
-This is the same as <rect x="40" y="40" height="50" width="50" cx="15" cy="15">.
+This is the same as <rect x="20" y="20" height="50" width="50" rx="15" ry="15">.
+
+Build a ``<circle>``.
+
+>     dCircle = pure $ S.SVG_Circle
+>       (S._PosCenterX # 200.0)
+>       (S._PosCenterY # 200.0)
+>       (S._Radius # 70.0)
+
+This is the same as writing: <circle cx="200" cy="200" r="70">.
 
 We can also build some ``Dynamic`` animation element properties:
 
@@ -75,6 +85,7 @@ Finally, put it all together for ``Reflex.Dom`` to add to our page.
 >   _ <- S.svg_ dSvgProps $ do
 >     _ <- S.svgBasicDyn S.Rectangle (mappend attrs . S.makeRectProps) (shiftRect dRect1) (pure mempty)
 >     _ <- S.svgBasicDyn_ S.Rectangle S.makeRectProps dRect1
+>     _ <- S.svgBasicDyn_ S.Circle S.makeCircleProps dCircle
 >     S.svgBasicDyn S.Rectangle S.makeRectProps dRect3 ( pure $ S.Animate =: dAnim )
 >
 >   pure ()
