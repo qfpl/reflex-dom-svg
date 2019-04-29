@@ -1,10 +1,7 @@
 name:                reflex-dom-svg
 version:             0.3.2.0
 synopsis:            Reflex functions for SVG elements.
-description:
-  <<http://i.imgur.com/uZnp9ke.png>>
-  .
-  Provides support for easily creating and manipulating SVG elements via Reflex.
+description:         Provides support for easily creating and manipulating SVG elements via Reflex.
 license:             BSD3
 license-file:        LICENCE
 author:              Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
@@ -12,8 +9,8 @@ maintainer:          Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞs�
 copyright:           Copyright (c) 2018, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230.
 category:            FRP,Web,Graphics
 build-type:          Simple
-extra-source-files:  ChangeLog.md
-cabal-version:       >=1.24
+extra-source-files:  changelog.md, README.md
+cabal-version:       1.24
 
 source-repository   head
   type:             git
