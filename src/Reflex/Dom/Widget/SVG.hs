@@ -19,12 +19,13 @@ module Reflex.Dom.Widget.SVG
   , svgElDynAttr_
   ) where
 
+import           Control.Monad.Fix           (MonadFix)
 import           Data.Text                   (Text)
 
-import           Reflex                      (Dynamic)
+import           Reflex                      (Dynamic, MonadHold) 
 import qualified Reflex                      as R
 
-import           Reflex.Dom.Core             (El, MonadWidget)
+import           Reflex.Dom.Core             (Element, EventResult, DomBuilderSpace, DomBuilder, PostBuild)
 import qualified Reflex.Dom.Core             as RD
 
 import           Data.Map                    (Map)
@@ -78,9 +79,9 @@ type instance CanBeNested BasicSVG = BasicInner
 
 -- | This represents an SVG element, containing both the raw Reflex.Dom @El@ type
 -- and a @Dynamic@ of all of the children that are nested in this element.
-data SVGEl t a = SVGEl
-  { _svgEl_el       :: RD.El t
-  , _svgEl_children :: Dynamic t (Map (CanBeNested a) (RD.El t))
+data SVGEl t m a = SVGEl
+  { _svgEl_el       :: Element EventResult (DomBuilderSpace m) t
+  , _svgEl_children :: Dynamic t (Map (CanBeNested a) (Element EventResult (DomBuilderSpace m) t))
   }
 
 svgXMLNamespace :: Text
@@ -90,25 +91,27 @@ svgXMLNamespace = "http://www.w3.org/2000/svg"
 -- use the right namespace so the browser actually picks up on it. The name
 -- space in use is "http://www.w3.org/2000/svg".
 svgElDynAttr'
-  :: forall t m a e. ( MonadWidget t m
+  :: forall t m a e. ( DomBuilder t m
+                     , PostBuild t m
                      , AsSVGTag e
                      )
   => e
   -> Dynamic t (Map Text Text)
   -> m a
-  -> m (El t, a)
+  -> m (Element EventResult (DomBuilderSpace m) t, a)
 svgElDynAttr' = RD.elDynAttrNS'
   (Just svgXMLNamespace)
   . svgTagName
 
 -- | As per @svgElDynAttr'@, but does not have any children.
 svgElDynAttr_
-  :: forall t m e. ( MonadWidget t m
+  :: forall t m e. ( DomBuilder t m
+                   , PostBuild t m
                    , AsSVGTag e
                    )
   => e
   -> Dynamic t (Map Text Text)
-  -> m (El t)
+  -> m (Element EventResult (DomBuilderSpace m) t)
 svgElDynAttr_ t dAttrs = fst <$> RD.elDynAttrNS'
   (Just svgXMLNamespace)
   (svgTagName t)
@@ -122,13 +125,14 @@ svgElDynAttr_ t dAttrs = fst <$> RD.elDynAttrNS'
 -- like in there, but bear in mind that the browser rules for SVG are still in
 -- play. So text inputs etc, won't work.
 svg_
-  :: ( MonadWidget t m
+  :: ( DomBuilder t m
+     , PostBuild t m
      , R.Reflex t
      , AsSVGTag a
      )
   => Dynamic t SVG_El
-  -> m ( SVGEl t a )
-  -> m ( RD.El t, SVGEl t a)
+  -> m ( SVGEl t m a )
+  -> m ( Element EventResult (DomBuilderSpace m) t, SVGEl t m a)
 svg_ dAttrs =
   svgElDynAttr' SVG_Root (makeSVGProps <$> dAttrs)
 
@@ -140,7 +144,10 @@ svg_ dAttrs =
 -- allows these properties to be converted into a @Map Text Text@, inline with
 -- other Reflex.Dom widgets.
 svgBasicDyn
-  :: ( MonadWidget t m
+  :: ( DomBuilder t m
+     , PostBuild t m
+     , MonadFix m 
+     , MonadHold t m
      , AsSVGTag s
      , AsSVGTag (CanBeNested s)
      , Ord (CanBeNested s)
@@ -149,14 +156,17 @@ svgBasicDyn
   -> ( p -> Map Text Text )
   -> Dynamic t p
   -> Dynamic t ( Map (CanBeNested s) (Map Text Text) )
-  -> m ( SVGEl t s )
+  -> m ( SVGEl t m s )
 svgBasicDyn t propFn dProps dInnerElMap =
   fmap ( uncurry SVGEl ) . svgElDynAttr' t (propFn <$> dProps) $ RD.listWithKey dInnerElMap
     (\innerS dInnerAttrs -> fst <$> svgElDynAttr' innerS dInnerAttrs RD.blank)
 
 -- | As per the @svgBasicDyn@ function, except with no inner elements.
 svgBasicDyn_
-  :: ( MonadWidget t m
+  :: ( DomBuilder t m
+     , PostBuild t m
+     , MonadFix m
+     , MonadHold t m
      , AsSVGTag s
      , AsSVGTag (CanBeNested s)
      , Ord (CanBeNested s)
@@ -164,6 +174,6 @@ svgBasicDyn_
   => s
   -> ( p -> Map Text Text )
   -> Dynamic t p
-  -> m ( SVGEl t s )
+  -> m ( SVGEl t m s )
 svgBasicDyn_ t propFn dProps =
   svgBasicDyn t propFn dProps (pure mempty)
