@@ -4,4 +4,4 @@
 let
   drv = reflex-platform.${compiler}.callPackage ./reflex-dom-svg.nix {};
 in
-  drv
+  reflex-platform.nixpkgs.haskell.lib.shellAware drv

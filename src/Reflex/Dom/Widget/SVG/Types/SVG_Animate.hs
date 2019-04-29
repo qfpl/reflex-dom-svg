@@ -20,18 +20,15 @@ module Reflex.Dom.Widget.SVG.Types.SVG_Animate
 
 import           Control.Lens                         (Lens', Prism', Rewrapped,
                                                        Unwrapped, Wrapped (..),
-                                                       at, iso, prism, re, to, failing,
-                                                       (?~), (^.), _Wrapped)
+                                                       at, iso, prism, to, (?~),
+                                                       (^.), _Wrapped)
 
 import           Data.Function                        ((&))
 
-import           Data.Bifunctor                       (first)
 import           Data.Semigroup                       ((<>))
 
-import           Data.Text                            (Text, pack, unpack)
+import           Data.Text                            (Text, pack)
 import           Data.Text.Lens                       (packed)
-
-import           Safe                                 (readEitherSafe)
 
 import           Data.Map                             (Map)
 
@@ -86,22 +83,9 @@ instance AsAnimDuration AnimDuration where
 toText :: String -> Word16 -> Text
 toText s = pack . (<> s) . show
 
-fromText :: Text -> Either Text Word16
-fromText = first pack . readEitherSafe . unpack
-
 animDurationToText :: AnimDuration -> Text
-animDurationToText (Secs s) = toText "s" s
+animDurationToText (Secs s)   = toText "s" s
 animDurationToText (MSecs ms) = toText "ms" ms
-
--- instance AsAnimDuration Text where
---   _AnimDuration = prism
---     (\case Secs s -> toText "s" s
---            MSecs ms -> toText "ms" ms
---     )
---     _g
-    
---   _Secs = prism (toText "s") fromText
---   _MSecs = prism (toText "ms") fromText
 
 -- | Properties for the <https://developer.mozilla.org/en-US/docs/Web/SVG/Element/animate \<animate\>> element.
 data SVG_Animate = SVG_Animate
