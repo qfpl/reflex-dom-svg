@@ -12,6 +12,11 @@ build-type:          Simple
 extra-source-files:  changelog.md, README.md
 cabal-version:       1.24
 
+tested-with:         GHC == 8.6.1
+                   , GHC == 8.4.3
+                   , GHC == 8.2.2
+                   , GHC == 8.0.2
+
 source-repository   head
   type:             git
   location:         git@github.com/qfpl/reflex-dom-svg/reflex-dom-svg.git
